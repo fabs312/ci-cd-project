@@ -24,7 +24,10 @@ Welcome to the Web App DevOps Project repo! This application allows you to effic
   
 ![Screenshot 2023-08-31 at 15 49 26](https://github.com/maya-a-iuga/Web-App-DevOps-Project/assets/104773240/83236d79-6212-4fc3-afa3-3cee88354b1a)
 
-- **Data Validation:** Ensure data accuracy and completeness with required fields, date restrictions, and card number validation.
+- **Data Validation:** Ensure data accuracy and c## New Featuresompleteness with required fields, date restrictions, and card number validation.
+
+- **Delivery Date column:** The delivery_date column allows for precise tracking of when orders are due to be delivered, an essential aspect of customer service and logistics management.
+This was removed from prod with changes reverted back to the original database configuration. The code changes can be seen [here](https://github.com/fabs312/ci-cd-project/commit/2f4fc789828b581e6c5486e0f5e57266c65f9e9c) for future reference.
 
 ## Getting Started
 
@@ -56,6 +59,7 @@ To run the application, you simply need to run the `app.py` script in this repos
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
+- Fabulous Fabs
 
 ## License
 
