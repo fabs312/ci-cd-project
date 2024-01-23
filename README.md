@@ -56,6 +56,58 @@ To run the application, you simply need to run the `app.py` script in this repos
 
 - **Database:** The application employs an Azure SQL Database as its database system to store order-related data.
 
+## Using docker to run flask application
+
+You can containerise your Flask application using the provided Dockerfile. This Dockerfile sets up the necessary environment to run your Flask app inside a Docker container.
+
+Dockerfile:
+```
+FROM python:3.8-slim
+WORKDIR /app
+COPY . /app
+RUN pip install --upgrade pip && \
+    pip install --trusted-host pypi.python.org -r requirements.txt
+EXPOSE 5000
+CMD ["python", "app.py"]
+```
+- Building and Running the Docker Image Locally
+
+Build the Docker Image In the directory containing your Dockerfile and application code, run:
+```docker build -t python_app . ```
+
+This command builds the Docker image and tags it as python_app.
+
+- Run the Docker Container
+
+Once the image is built, start the container using:
+
+```docker run -p 5000:5000 python_app```
+
+This command maps port 5000 of the container to port 5000 on your host machine.
+
+- Access the Flask Application
+
+The Flask application will be accessible at http://localhost:5000 in your web browser.
+
+## Usage Instructions for Pulling Image from Docker Hub
+Ensure Docker is Installed and Running.
+Before pulling and running the Docker image, make sure Docker is installed on your machine and the Docker daemon is running.
+
+- Pull the Image from Docker Hub using:
+```docker pull fabs312/python_app:1.0```
+
+This command downloads the python_app image with the tag 1.0 from the Docker Hub account fabs312.
+
+- Run the Container after pulling the image with:
+```docker run -p 5000:5000 fabs312/python_app:1.0```
+
+This maps port 5000 of the container to port 5000 on your host machine.
+
+- Access the Flask Application:
+
+Just like when running locally, the application will be accessible at http://localhost:5000.
+
+
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
