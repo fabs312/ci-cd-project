@@ -107,6 +107,93 @@ This maps port 5000 of the container to port 5000 on your host machine.
 
 Just like when running locally, the application will be accessible at http://localhost:5000.
 
+# Terraform Networking Module for AKS
+This Terraform module is designed to create essential networking resources in Azure for deploying an AKS cluster. The module sets up a Virtual Network (VNet), subnets for control plane and worker nodes, and a Network Security Group (NSG) with specific rules.
+
+## Resources Created
+
+### Azure Resource Group
+- **Name**: Specified by the `resource_group_name` variable.
+- **Purpose**: Acts as a container that holds related resources for an Azure solution.
+
+### Virtual Network (VNet)
+- **Name**: `aks-vnet`
+- **Purpose**: Provides a private network in Azure and is used to allocate private IP addresses to resources within the resource group.
+
+### Subnets
+- **Control Plane Subnet**
+  - **Name**: `control-plane-subnet`
+  - **Purpose**: Used specifically for AKS control plane components.
+- **Worker Node Subnet**
+  - **Name**: `worker-node-subnet`
+  - **Purpose**: Used for AKS worker nodes where Kubernetes pods will be scheduled.
+
+### Network Security Group (NSG)
+- **Name**: `aks-nsg`
+- **Purpose**: Contains a list of security rules that allow or deny network traffic to resources connected to AKS VNet subnets.
+
+#### NSG Rules
+- **kube-apiserver-rule**: Allows traffic to the kube-apiserver.
+- **ssh-rule**: Allows inbound SSH traffic. This is particularly useful for troubleshooting purposes.
+
+## Input Variables
+
+- `resource_group_name`: Name of the Azure Resource Group.
+- `location`: Azure region where resources will be deployed.
+- `vnet_address_space`: Address space for the VNet in CIDR notation.
+- `control_plane_subnet_address`: CIDR block for the control plane subnet.
+- `worker_node_subnet_address`: CIDR block for the worker node subnet.
+
+## Output Variables
+
+- `vnet_id`: The ID of the created VNet.
+- `control_plane_subnet_id`: The ID of the control plane subnet.
+- `worker_node_subnet_id`: The ID of the worker node subnet.
+- `networking_resource_group_name`: Name of the Azure Resource Group.
+- `aks_nsg_id`: The ID of the created NSG.
+
+## Usage
+
+To use this module in your Terraform configuration, include it as a module in your main Terraform file and specify the source and input variables.
+
+Example:
+```hcl
+module "networking" {
+  source                        = "./modules/networking"
+  resource_group_name           = "my-aks-resources"
+  location                      = "East US"
+  vnet_address_space            = ["10.0.0.0/16"]
+  control_plane_subnet_address  = "10.0.1.0/24"
+  worker_node_subnet_address    = "10.0.2.0/24"
+}
+```
+## Terraform Configuration File
+
+The Terraform configuration file (`main.tf`) specifies the required providers and sets up the Azure provider. This file is essential for initializing Terraform with the correct provider and settings.
+
+### Required Providers
+
+```
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "~>3.0"
+    }
+  }
+}
+
+provider "azurerm" {
+  skip_provider_registration = true
+  features {}
+}
+```
+
+Run the following command:
+
+```terraform init```
+
+This command will download the required providers and initialize your Terraform workspace.
 
 ## Contributors 
 
